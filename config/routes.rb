@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   get '/', to: 'products#index'
+  get '/:wildthing', to: 'products#index'
+  # :foo is a wildcard param passed via URL
+  #can also get pass a record id as wildcard param via URL:
+  #get '/:id', to: 'products#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

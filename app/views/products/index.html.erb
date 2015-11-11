@@ -1,40 +1,41 @@
 <h1> Index </h1>
-<!--> image-responsive <-->
+<!-- image-responsive -->
   
 <% Product.all.each do |row| %>
-            
 
-<div class = .col-md-3>
+<div class = "col-md-3">
   
-  <table>
+  <table> 
+  
+      <% @last_visible_column_index.times do |index| %>
 
-    <tr>
+        <tr>
 
-      <% Product.column_names.length.times do |index| %>
+          <td>
 
-        <th>
-          <% s=send(Product.column_names[index]) %>
-          <%= "#{row.send(s)}" %>       
+            <% if ["image", "id", "name"].exclude?(Product.column_names[index]) %>
 
-        </th>
+              <b>
+                <%= "#{Product.column_names[index].capitalize}: " %>
+              </b>
+
+            <% end %>             
+
+            <% if Product.column_names[index]=="image" %>       
+              
+              <%= image_tag(  "#{row.attributes.to_a[index][1]}", class:"product_image") %>
+            
+            <% elsif Product.column_names[index]!="id" %>
+              
+              <%= "#{row.attributes.to_a[index][1]}" %>
+            
+            <% end %>
+
+          </td>
+
+        </tr>
 
       <% end %>
-
-    </tr>
-
-    <tr>
-
-      <% Product.column_names.each do |column_name| %>
-
-        <td>
-
-          <%= "#{row.column_name}" %>
-
-        </td>
-
-      <% end %>
-
-    </tr>
 
   </table>
 
