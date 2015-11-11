@@ -1,0 +1,43 @@
+<h1> Index </h1>
+<!--> image-responsive <-->
+  
+<% Product.all.each do |row| %>
+            
+
+<div class = .col-md-3>
+  
+  <table>
+
+    <tr>
+
+      <% Product.column_names.length.times do |index| %>
+
+        <th>
+          <% s=send(Product.column_names[index]) %>
+          <%= "#{row.send(s)}" %>       
+
+        </th>
+
+      <% end %>
+
+    </tr>
+
+    <tr>
+
+      <% Product.column_names.each do |column_name| %>
+
+        <td>
+
+          <%= "#{row.column_name}" %>
+
+        </td>
+
+      <% end %>
+
+    </tr>
+
+  </table>
+
+</div>  
+
+<% end %>
