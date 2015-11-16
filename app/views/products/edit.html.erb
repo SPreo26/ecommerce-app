@@ -1,0 +1,68 @@
+<%if @product_id_exists %>
+  
+
+  <table class="margined">
+    
+    <%= form_tag "/products/#{@id}", method: :patch do %>
+      
+      <tr>
+        <div>
+          <td>
+            <%= label_tag "Name" %>
+          </td>
+          <td>
+            <%= text_area_tag :name, "#{@product.name}", class:'text_area' %>
+          </td>
+        </div>
+      </tr>
+
+      <tr>  
+        <div>
+          <td>
+            <%= label_tag "Price" %>
+          </td>
+          <td>
+            <%= text_area_tag :price, "#{@product.price}", class:'text_area' %>
+          </td>
+        </div>
+      </tr>
+
+      <tr>
+        <div>
+          <td> 
+            <%= label_tag "Image URL" %>
+          </td>
+          <td>
+            <%= text_area_tag :image, "#{@product.image}", class:'text_area' %>
+          </td>
+        </div>
+      </tr>
+
+      <tr>
+        <div>
+          <td> 
+            <%= label_tag "Description" %>
+          </td>
+          <td>
+            <%= text_area_tag :description, "#{@product.description}", class:'text_area' %>
+          </td>
+        </div>
+      </tr>
+     
+      <tr>
+        <td>
+          <div>
+            <%= submit_tag "Submit" %>
+          </div>
+        </td>
+      </tr>
+    
+    <% end %>
+
+  </table>
+
+<% else %>
+
+  <div class="alert alert-danger" role="alert">Product id <%= @id %> doesn't exist</div>
+
+<% end %>

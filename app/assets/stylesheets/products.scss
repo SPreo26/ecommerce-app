@@ -10,7 +10,9 @@
   width: 200px;
 }
 
-div {
-  background-color: yellow;
+.col-md-3 {
+  background-image: <%= [backgrounsetc-starfield-1.jpg].sample %>  ;
   padding: 10px;
 }
+
+

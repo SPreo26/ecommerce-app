@@ -1,0 +1,55 @@
+<table class="margined">
+<%= form_tag '/products', method: :post do %>
+  <tr>
+    <div>
+      <td>
+        <%= label_tag "Name" %>
+      </td>
+      <td>
+        <%= text_area_tag :name, "", class:'text_area' %>
+      </td>
+    </div>
+  </tr>
+
+  <tr>  
+    <div>
+      <td>
+        <%= label_tag "Price" %>
+      </td>
+      <td>
+        <%= text_area_tag :price, "", class:'text_area' %>
+      </td>
+    </div>
+  </tr>
+
+  <tr>
+    <div>
+      <td> 
+        <%= label_tag "Image URL" %>
+      </td>
+      <td>
+        <%= text_area_tag :image, "", class:'text_area' %>
+      </td>
+    </div>
+  </tr>
+
+  <tr>
+    <div>
+      <td> 
+        <%= label_tag "Description" %>
+      </td>
+      <td>
+        <%= text_area_tag :description, "", class:'text_area' %>
+      </td>
+    </div>
+  </tr>
+ 
+  <tr>
+    <td>
+      <div>
+        <%= submit_tag "Submit" %>
+      </div>
+    </td>
+  </tr>
+<% end %>
+</table>

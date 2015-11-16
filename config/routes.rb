@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  get '/', to: 'products#index'
-  get '/:wildthing', to: 'products#index'
+  get '/products', to: 'products#index'
+  get '/products/new', to: 'products#new'
+  post '/products', to: 'products#create'
+  get '/products/:id', to: 'products#show'
+  get '/products/:id/edit', to: 'products#edit'
+  patch '/products/:id', to: 'products#update'
+  delete '/products/:id', to: 'products#destroy'
+
   # :foo is a wildcard param passed via URL
   #can also get pass a record id as wildcard param via URL:
   #get '/:id', to: 'products#index'

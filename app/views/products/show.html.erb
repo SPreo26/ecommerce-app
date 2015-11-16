@@ -1,0 +1,79 @@
+<%if @product_id_exists %>
+
+  <div class = "col-md-3">
+
+    <table> 
+
+      <% @last_visible_column_index.times do |index| %>
+
+      <% @attrib_name = Product.column_names[index] %>
+
+        <tr>
+
+          <td>
+
+            <% if ["image", "id", "name"].exclude?(Product.column_names[index]) %>
+
+              <b>
+                <%= "#{@attrib_name.capitalize}: " %>
+              </b>
+
+            <% end %>             
+
+            <% if @attrib_name =="image" %>       
+              
+              <%= image_tag(  "#{@product.attributes.to_a[index][1]}", class:"product_image") %>
+            
+            <% elsif @attrib_name !="id" %>
+              
+              <%= "#{@product.attributes.to_a[index][1]}" %>
+            
+            <% end %>
+
+          </td>
+
+        </tr>
+
+      <% end %>
+
+      <tr>
+
+        <td> 
+          Last updated: <%=@product.friendly_update_time%>
+        </td>
+
+      </tr>
+
+    </table>
+
+  </div>  
+
+  <div class="button">
+    
+    <button type="button">
+    <%= link_to "Delete", "/products/#{@id}", method: :delete %>
+    </button>
+
+  </div>
+
+  <div class="button">
+  
+     <button type="button">
+    <%= link_to "Back to Product List", "/products" %>
+    </button>
+
+  </div>
+
+  <div class="button">
+  
+     <button type="button">
+    <%= link_to "Edit Product Info", "/products/#{@id}/edit" %>
+    </button>
+
+  </div>
+
+<% else %>
+
+  <div class="alert alert-danger" role="alert">Product id <%= @id %> doesn't exist</div>
+
+<% end %>

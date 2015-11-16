@@ -9,23 +9,29 @@
   
       <% @last_visible_column_index.times do |index| %>
 
+      <% @attrib_name=Product.all.column_names[index] %>
+
         <tr>
 
           <td>
 
-            <% if ["image", "id", "name"].exclude?(Product.column_names[index]) %>
+            <% if ["image", "id", "name"].exclude?(@attrib_name) %>
 
               <b>
-                <%= "#{Product.column_names[index].capitalize}: " %>
+                <%= "#{@attrib_name.capitalize}: " %>
               </b>
 
             <% end %>             
 
-            <% if Product.column_names[index]=="image" %>       
-              
+            <% if @attrib_name=="name" %>
+
+              <%= link_to "#{row.name}", "/products/#{row.id}" %>
+
+            <% elsif @attrib_name=="image" %>     
+
               <%= image_tag(  "#{row.attributes.to_a[index][1]}", class:"product_image") %>
             
-            <% elsif Product.column_names[index]!="id" %>
+            <% elsif @attrib_name!="id" %>
               
               <%= "#{row.attributes.to_a[index][1]}" %>
             
@@ -42,3 +48,22 @@
 </div>  
 
 <% end %>
+
+<%= form_tag '/form_result', method: :post do %>
+
+  <div>
+    <%= label_tag :message, "Field name" %>
+    <%= text_area_tag :message %>
+  </div>
+  
+  <div>
+    <%= submit_tag "Send Message" %>
+  </div>
+
+<% end %>
+
+<div class="button">
+  
+  <button type="button" onclick="window.location.href='/products/new'">Add New Item</button>
+
+</div>
