@@ -5,14 +5,37 @@
 @import "bootstrap";
 
 
-.product_image {
-  height: 200px;
-  width: 200px;
+.product_img {
+  height: 150px;
+  width: 150px;
 }
 
-.col-md-3 {
-  background-image: <%= [backgrounsetc-starfield-1.jpg].sample %>  ;
+.col-md-2 {
+  background-image: "backgrounsetc-starfield-1.jpg";
   padding: 10px;
 }
 
+.sale_note {
+  font-family: 'Indie Flower', cursive; 
+  font-weight: 600;
+  font-style: italic;
+  font-size: 20px;
+  color: red;
+  padding-left: 10px;
+}
 
+.price_after_tax, .item_tax, .sale_note{
+  text-align: right;
+}
+
+.item_attr_not_below_img {
+  text-align: left;
+}
+
+.item_attr_below_img {
+  text-align: left;
+}
+
+.price_after_tax, .item_tax, .sale_note, .item_update_note, .item_attr_not_below_img, .item_attr_below_img {
+  max-width: 200px;
+}

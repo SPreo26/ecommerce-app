@@ -1,47 +1,71 @@
 <%if @product_id_exists %>
 
-  <div class = "col-md-3">
+  <div class = "col-md-2">
 
     <table> 
 
       <% @last_visible_column_index.times do |index| %>
 
       <% @attrib_name = Product.column_names[index] %>
+      <% @attrib_value = @product.attributes.to_a[index][1] %>
 
         <tr>
-
-          <td>
-
+          <td class= 
+          <%= @product.is_item_attr_below_img?(@attrib_name) %>
+          >
             <% if ["image", "id", "name"].exclude?(Product.column_names[index]) %>
-
               <b>
                 <%= "#{@attrib_name.capitalize}: " %>
               </b>
-
             <% end %>             
 
-            <% if @attrib_name =="image" %>       
-              
-              <%= image_tag(  "#{@product.attributes.to_a[index][1]}", class:"product_image") %>
+            <% if @attrib_name =="name" %> 
+               <b> <%= "#{@attrib_value}" %> </b>
+            
+            <% elsif @attrib_name =="image" %>                   
+              <%= image_tag("#{@attrib_value}", class:"product_img") %>
+            
+            <% elsif @attrib_name == "description" %>
+              <br> <%= "#{@attrib_value}" %>
+            
+            <% elsif @attrib_name =="price" %>
+              <%= "$#{@attrib_value}" %>
             
             <% elsif @attrib_name !="id" %>
-              
-              <%= "#{@product.attributes.to_a[index][1]}" %>
+              <%= "#{@attrib_value}" %>
             
             <% end %>
 
           </td>
-
         </tr>
 
       <% end %>
 
       <tr>
-
-        <td> 
-          Last updated: <%=@product.friendly_update_time%>
+        <td class="item_update_note"> 
+          <b>Last updated:</b>
+          <br><%=@product.friendly_update_time%>
         </td>
+      </tr>
 
+      <tr>
+        <td class="item_tax">
+          <b>Tax:</b>
+          <%= "$#{number_with_precision(@product.item_tax,precision:2)}"%>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="price_after_tax">
+          <b>Full Price:</b>
+          <%= "$#{number_with_precision(@product.price+@product.item_tax,precision:2)}"%>
+        </td>
+      </tr>     
+
+      <tr>
+        <td class="sale_note">
+          <%= @product.sale_message %>
+        </td>
       </tr>
 
     </table>
