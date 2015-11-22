@@ -1,48 +1,73 @@
+<% if @product_show_is_random %>
+  <h1 class="heading"> Random pick! </h1>
+<% end %>
+
 <%if @product_id_exists %>
 
   <div class = "col-md-2">
 
     <table> 
 
-      <% @last_visible_column_index.times do |index| %>
+      <% @number_of_columns.times do |index| %>
 
-      <% @attrib_name = Product.column_names[index] %>
-      <% @attrib_value = @product.attributes.to_a[index][1] %>
+        <% @attrib_name = Product.column_names[index] %>
+        <% @attrib_value = @product.attributes.to_a[index][1] %>
 
         <tr>
-          <td class= 
-          <%= @product.is_item_attr_below_img?(@attrib_name) %>
-          >
-            <% if ["image", "id", "name"].exclude?(Product.column_names[index]) %>
-              <b>
-                <%= "#{@attrib_name.capitalize}: " %>
-              </b>
-            <% end %>             
+          <% if @attrib_name == "name" %>
+            <td class="product_name" >
+          <% else %>
+            <td class="left_aligned_product_info">
+          <% end %>
+        
+          <% if ["id", "name","created_at","updated_at","supplier_id", "in_stock"].exclude?(@attrib_name) %>
+            <b>
+              <%= "#{@attrib_name.capitalize}: " %>
+            </b>
+          <% elsif @attrib_name=="supplier_id" %>
+            <b> Supplier: </b>
+          <% end %>             
 
-            <% if @attrib_name =="name" %> 
-               <b> <%= "#{@attrib_value}" %> </b>
-            
-            <% elsif @attrib_name =="image" %>                   
-              <%= image_tag("#{@attrib_value}", class:"product_img") %>
-            
-            <% elsif @attrib_name == "description" %>
-              <br> <%= "#{@attrib_value}" %>
-            
-            <% elsif @attrib_name =="price" %>
-              <%= "$#{@attrib_value}" %>
-            
-            <% elsif @attrib_name !="id" %>
-              <%= "#{@attrib_value}" %>
-            
-            <% end %>
+          <% if @attrib_name =="name" %> 
+             <b> <%= "#{@attrib_value}" %> </b>
+
+          <% elsif @attrib_name == "description" %>
+            <br> <%= "#{@attrib_value}" %>
+          
+          <% elsif @attrib_name =="price" %>
+            <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}" %>
+          
+          <% elsif @attrib_name == "supplier_id" %>
+            <br> <%= "#{@supplier_name}" %>
+
+          <% elsif ["id","created_at","updated_at","supplier_id","in_stock"].exclude?(@attrib_name)%>
+            <%= "#{@attrib_value}" %>
+          
+          <% end %>
 
           </td>
         </tr>
 
+
+        <% if @attrib_name == "name" %>
+                  
+          <% @images=@product.get_image_urls %>
+          
+          <% @images.each do |url| %>
+            <tr>
+              <td>
+              <%= image_tag(  "#{url}", class:"product_img") %>
+              </td>
+            </tr>
+          <% end %>
+
+        <% end %>
+
+
       <% end %>
 
       <tr>
-        <td class="item_update_note"> 
+        <td class="item_update_time_note"> 
           <b>Last updated:</b>
           <br><%=@product.friendly_update_time%>
         </td>
@@ -51,22 +76,36 @@
       <tr>
         <td class="item_tax">
           <b>Tax:</b>
-          <%= "$#{number_with_precision(@product.item_tax,precision:2)}"%>
+            <% if @product.item_tax %>
+              <%= "#{number_to_currency(@product.item_tax, unit: '$', delimiter: ',')}"%>
+            <% end %>
         </td>
       </tr>
 
       <tr>
         <td class="price_after_tax">
           <b>Full Price:</b>
-          <%= "$#{number_with_precision(@product.price+@product.item_tax,precision:2)}"%>
+          <% if @product.price %>
+            <%= "#{number_to_currency(@product.price+@product.item_tax, unit: '$', delimiter: ',')}"%>
+          <% end %>
         </td>
       </tr>     
 
-      <tr>
-        <td class="sale_note">
-          <%= @product.sale_message %>
-        </td>
-      </tr>
+      <% if @product.sale_message && @product.sale_message!="" %>
+        <tr>
+          <td class="item_note"> 
+            <%= @product.sale_message %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if !@product.in_stock %>
+        <tr>
+          <td class="item_note"> 
+            <%= "Out of stock!" %> 
+          </td>
+        <tr>
+      <% end %>
 
     </table>
 

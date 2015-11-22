@@ -1,0 +1,69 @@
+<h1 class="heading">Product Catalog</h1>
+<h2 class="heading">Ordered by price: highest to lowest</h2>
+<!-- image-responsive -->
+  
+<% Product.order(price: :desc).each do |row| %>
+
+<div class = "col-md-2">
+  <table> 
+  
+      <% @last_visible_column_index.times do |index| %>
+
+        <% @attrib_name=Product.all.column_names[index] %>
+
+        <tr>
+          <td>
+
+            <% if ["image", "id", "name"].exclude?(@attrib_name) %>
+
+              <b>
+                <%= "#{@attrib_name.capitalize}: " %>
+              </b>
+
+            <% end %>             
+
+            <% if @attrib_name=="name" %>
+
+              <%= link_to "#{row.name}", "/products/#{row.id}" %>
+
+            <% elsif @attrib_name=="image" %>     
+
+              <%= image_tag(  "#{row.attributes.to_a[index][1]}", class:"product_img") %>
+
+            <% elsif @attrib_name =="price" %>
+              <%= "#{number_to_currency(row.price, unit: '$', delimiter: ',')}" %>
+
+            <% elsif @attrib_name!="id" %>
+              
+              <%= "#{row.attributes.to_a[index][1]}" %>
+
+            <% end %>
+
+          </td>
+        </tr>
+
+      <% end %>
+
+  </table>
+</div>  
+
+<% end %>
+
+<%= form_tag '/form_result', method: :post do %>
+
+  <div>
+    <%= label_tag :message, "Field name" %>
+    <%= text_area_tag :message %>
+  </div>
+  
+  <div>
+    <%= submit_tag "Send Message" %>
+  </div>
+
+<% end %>
+
+<div class="button">
+  
+  <button type="button" onclick="window.location.href='/products/new'">Add New Item</button>
+
+</div>

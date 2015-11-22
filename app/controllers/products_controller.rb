@@ -2,14 +2,47 @@ class ProductsController < ApplicationController
   
   def index
 
-    @last_visible_column_index = Product.column_names.length-2
+    @number_of_columns = Product.column_names.length
       #this makes sure created_at and updated_at aren't shown
       
       #@message = params [:message]
       #@message2 = params [:message_2]
       #then access webpage via localhost/3000/parameters/?message=blahblah&message_2=blah
       #params is a hash
-      
+    @products_subset = Product.all
+    @product_index_is_discounted = false
+  end
+
+  def products_ordered_price_asc
+    @number_of_columns = Product.column_names.length
+  end
+
+  def products_ordered_price_desc
+    @number_of_columns = Product.column_names.length
+  end
+
+  def discounted
+    @number_of_columns = Product.column_names.length
+    
+    @products_subset = Product.get_discounted
+    @discounted_heading = true
+    
+    render :index
+  end
+
+  def random
+
+    @number_of_columns = Product.column_names.length
+    
+    @product = Product.all.sample
+    @product_id_exists=true
+    @product_show_is_random = true
+
+    @product = Product.find_by(id: @id)
+    @supplier_name = @product.supplier.name
+
+    render :show
+
   end
 
   def new
@@ -61,10 +94,11 @@ class ProductsController < ApplicationController
 
   def show
 
-    @last_visible_column_index = Product.column_names.length-2
+    @number_of_columns = Product.column_names.length
     @id = params[:id].to_i
     
     @product = Product.find_by(id: @id)
+    @supplier_name = @product.supplier.name
 
     if @product      
       @product_id_exists = true    
