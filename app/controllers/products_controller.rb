@@ -65,12 +65,6 @@ class ProductsController < ApplicationController
     else
       @product_info_to_create << nil
     end
-    
-    if params[:image]!= ""
-      @product_info_to_create << params[:image]
-    else
-      @product_info_to_create << nil
-    end
 
     if params[:description]!= ""
       @product_info_to_create << params[:description]
@@ -87,7 +81,15 @@ class ProductsController < ApplicationController
                       ( {Product.column_names[index+1] => \
                         @product_info_to_create[index] }) #index+1 skips id and starts with first name
       end
-    
+
+      if params[:image] != ""
+        Image.create
+        Image.update(url: params[:image])
+        Image.update(product_id: @id)
+      end
+
+      product.update(user_id: current_user.id)
+
     end
 
   end
@@ -152,12 +154,6 @@ class ProductsController < ApplicationController
     else
       @product_info_to_edit << nil
     end
-    
-    if params[:image] != ""
-      @product_info_to_edit << params[:image]
-    else
-      @product_info_to_edit << nil
-    end
 
     if params[:description] != ""
       @product_info_to_edit << params[:description]
@@ -165,16 +161,30 @@ class ProductsController < ApplicationController
       @product_info_to_edit << nil
     end
 
-    if @product_info_to_edit.any? #this is to prevent empty form submissions from creating a contact
-      product = Product.find_by(id: @id)
+   
+
+    if @product_info_to_edit.any? || params[:image] != "" #this is to prevent empty form submissions from creating a contact
+    
+      product = Product.find_by(id: @id) 
+      
       @product_info_to_edit.length.times do |index|
+
         if @product_info_to_edit[index] #if the information in the given field is not empty (e.g. if something was actually typed for 'name' in the edit form)
         puts @product_info_to_edit[index]
         product.update\
                       ( {Product.column_names[index+1].to_sym => \
                         @product_info_to_edit[index] }) #index+1 skips id and starts with first name
         end
+
       end
+
+      if params[:image] != ""
+        Image.create
+        Image.update(url: params[:image])
+        Image.update(product_id: @id)
+      end
+      
+
     end
 
     redirect_to "/products/#{@id}"

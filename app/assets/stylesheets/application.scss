@@ -15,5 +15,17 @@
  */
 
  .body_class {
-background: url("concrete_seamless.png") repeat;
+  background: url("concrete_seamless.png") repeat;
  }
+
+.login_form, .devise_link_text, .devise_field {
+  padding-left: 10px;
+}
+
+.devise_head_text {
+  padding-left: 10px !important;
+}
+
+.devise_button {
+  padding: 5px 5px 5px 10px
+}

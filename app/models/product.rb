@@ -1,10 +1,11 @@
 class Product < ActiveRecord::Base
   belongs_to :supplier
+  belongs_to :user
   has_many :images
 
   def self.get_discounted
 
-    Product.where("price < ?",2)
+    Product.where("price < ?", 2)
 
   end
 

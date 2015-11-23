@@ -45,9 +45,24 @@
   margin-left: 10px;
 }
 
-
-
 .product_name {
-  font-size:16px;
+  font-size: 16px;
   text-align: left;
+}
+
+.margined {
+  margin-left: 10px;
+}
+
+.text_area {
+  max-width: 162px;
+  max-height: 30px;
+  margin: 10px;
+}
+
+.description_area {
+  max-width: 162px;
+  height: 100px;
+  max-height: 100px;
+  margin: 10px;
 }
