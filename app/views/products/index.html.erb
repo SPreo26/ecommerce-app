@@ -4,6 +4,12 @@
   <h2 class="heading"> Discounted Items </h2>
 <% end %>
 
+<% if @product_create_failed %>
+
+  <div class="alert alert-danger" role="alert">Product could not be created - some info missing! </div>
+
+<% end %>
+
 <% @products_subset.each do |row| %>
 
 <div class = "col-md-2">

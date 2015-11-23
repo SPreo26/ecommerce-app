@@ -4,6 +4,10 @@
 
 <%if @product_id_exists %>
 
+  <% if @product_created%>
+    <div class="alert alert-success" role="alert"> New product created! </div>
+  <% end %>
+
   <div class = "col-md-2">
 
     <table> 
@@ -20,7 +24,7 @@
             <td class="left_aligned_product_info">
           <% end %>
         
-          <% if ["id", "name","created_at","updated_at","supplier_id", "in_stock"].exclude?(@attrib_name) %>
+          <% if ["price", "description"].include?(@attrib_name) %>
             <b>
               <%= "#{@attrib_name.capitalize}: " %>
             </b>
@@ -40,7 +44,7 @@
           <% elsif @attrib_name == "supplier_id" %>
             <br> <%= "#{@supplier_name}" %>
 
-          <% elsif ["id","created_at","updated_at","supplier_id","in_stock"].exclude?(@attrib_name)%>
+          <% elsif ["description"].include?(@attrib_name)%>
             <%= "#{@attrib_value}" %>
           
           <% end %>
@@ -63,14 +67,10 @@
 
         <% end %>
 
-
       <% end %>
 
       <tr>
-        <td class="item_update_time_note"> 
-          <b>Last updated:</b>
-          <br><%=@product.friendly_update_time%>
-        </td>
+        <td><br></td>
       </tr>
 
       <tr>
@@ -111,28 +111,55 @@
 
   </div>  
 
-  <div class="button">
+  <div class="col-md-2" >
+    <table class = "item_extras">
+      <tr>
+        <td>
+          <div class="button">
+            
+            <button type="button">
+              <%= link_to "Delete", "/products/#{@id}", method: :delete %>
+            </button>
+
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="button">
     
-    <button type="button">
-    <%= link_to "Delete", "/products/#{@id}", method: :delete %>
-    </button>
+            <button type="button">
+              <%= link_to "Back to Catalog", "/products" %>
+            </button>
 
-  </div>
+          </div>
+        </td>
+      </tr>
+   
+      <tr>
+        <td>
+          <div class="button">
+          
+            <button type="button">
+              <%= link_to "Edit Product Info", "/products/#{@id}/edit" %>
+            </button>
 
-  <div class="button">
-  
-     <button type="button">
-    <%= link_to "Back to Product List", "/products" %>
-    </button>
+          </div>
+        </td>
+      </tr>
 
-  </div>
-
-  <div class="button">
-  
-     <button type="button">
-    <%= link_to "Edit Product Info", "/products/#{@id}/edit" %>
-    </button>
-
+      <tr>
+        <td>
+          <div class="item_update_time_note"> 
+            
+            <b>Last updated:</b>
+            <br><%= @product.friendly_update_time %>
+          
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 
 <% else %>

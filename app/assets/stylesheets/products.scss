@@ -25,7 +25,8 @@
   color: red;
 }
 
-.price_after_tax, .item_tax, .sale_note{
+
+.price_after_tax, .item_tax, .item_note{
   text-align: right;
 }
 
@@ -33,8 +34,14 @@
   text-align: left;
 }
 
-.price_after_tax, .item_tax, .sale_note, .item_update_time_note, .left_aligned_product_info {
+.price_after_tax, .item_tax, .item_note, .item_update_time_note, .left_aligned_product_info {
   max-width: 200px;
+}
+
+.item_update_time_note{
+  font-size: 12px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .order_buttons{
@@ -65,4 +72,12 @@
   height: 100px;
   max-height: 100px;
   margin: 10px;
+}
+
+.item_extras {
+  margin:20px 5px 20px 5px;
+}
+
+.button {
+  padding: 1px;
 }

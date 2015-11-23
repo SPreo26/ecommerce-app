@@ -1,0 +1,12 @@
+<% product.images.each_with_index do |image, index| %>
+<tr>
+  <div>
+    <td> 
+      <%= label_tag "Add Image URL" %>
+    </td>
+    <td>
+      <%= text_area_tag ":image_#{index}".to_sym, "#{image}", class:'text_area' %>
+    </td>
+  </div>
+</tr>
+<% end %>
