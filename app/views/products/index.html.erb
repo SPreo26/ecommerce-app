@@ -1,7 +1,7 @@
-<h1 class="heading">Product Catalog</h1>
+<h2 class="heading">Product Catalog</h2>
 <!-- image-responsive -->
 <% if @product_index_is_discounted %>
-  <h2 class="heading"> Discounted Items </h2>
+  <h3 class="special_heading"> Discounted Items </h3>
 <% end %>
 
 <% if @product_create_failed %>
@@ -22,28 +22,25 @@
 
       <tr>
         <% if @attirb_name == "name" %>
-          <td class="left_aligned_product_info">
+          <td>
         <% else %>
-          <td class="product_name" >
+          <td class="left_aligned_product_info">
         <% end %>
 
-        <% if ["id", "name","created_at","updated_at","supplier_id","in_stock","description"].exclude?(@attrib_name) %>
+        <% if ["price"].include?(@attrib_name) %>
           <b>
             <%= "#{@attrib_name.capitalize}: " %>
           </b>
         <% end %>             
 
         <% if @attrib_name =="name" %> 
-           <b> <%= link_to "#{@attrib_value}", "/products/#{row.id}" %> </b>
+           <b> <%= link_to "#{@attrib_value}", "/products/#{row.id}", class: 'product_name' %> </b>
 
         <% elsif @attrib_name == "description" %>
           <%= "#{@attrib_value}" %>
         
-        <% elsif @attrib_name =="price" %>
+        <% elsif @attrib_name == "price" %>
           <%= "#{number_to_currency(row.price, unit: '$', delimiter: ',')}" %>
-
-        <% elsif ["id","created_at","updated_at","supplier_id","in_stock"].exclude?(@attrib_name)%>
-          <%= "#{@attrib_value}" %>
         
         <% end %>
 
@@ -53,10 +50,10 @@
 
       <% if @attrib_name == "name" %>
 
-        <% @images=row.get_image_urls %>
+        <% @image=row.get_image_urls.first %>
         <tr>
           <td>
-          <%= image_tag(  "#{@images.first}", class:"product_img") %>
+          <%= link_to image_tag(  "#{@image}", class: 'product_img'), "/products/#{row.id}"  %>
           </td>
         </tr> 
 
@@ -77,15 +74,17 @@
 
 <% end %>
 
-<div class="button">
+<div class="new_item_button">
   
-  <button type="button" onclick="window.location.href='/products/new'">Add New Item</button>
+  <button type="button">
+    <%= link_to "Add New Item", "/products/new" %>
+  </button>
 
 </div>
 
-<div class="order_buttons">
+<span class="sort_button_area">
 
-  <b> Order by Price: </b>
+  <div class="sort_by_price"> Order by Price: </div>
 
   <div class="button">
       <button type="button">
@@ -99,4 +98,4 @@
       </button>
   </div>
 
-</div>
+</span>

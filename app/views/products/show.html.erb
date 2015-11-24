@@ -1,5 +1,5 @@
 <% if @product_show_is_random %>
-  <h1 class="heading"> Random pick! </h1>
+  <h2 class="heading"> Random pick! </h2>
 <% end %>
 
 <%if @product_id_exists %>
@@ -159,6 +159,25 @@
           </div>
         </td>
       </tr>
+      <div class="quantity_field">
+        <%= form_tag '/orders/new', method: "get" do %>
+          <tr> 
+            <td class="quantity_field" >
+              <%= label_tag "Quantity"%>
+              <%= text_area_tag :order_quantity, "1", class: 'quantity_text_area'%>
+            </td>
+          </tr>
+            <td>   
+              <%= hidden_field_tag :product_id, @id %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <%= submit_tag "Buy Now" %>
+            </td>
+          </tr>
+        <% end %>
+      </div>
     </table>
   </div>
 

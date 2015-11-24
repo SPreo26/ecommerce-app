@@ -4,20 +4,21 @@ Rails.application.routes.draw do
   root to: "products#index"
 
   get '/products', to: 'products#index'
-  
   get '/products/new', to: 'products#new'
   get '/products/ordered_price_asc', to: 'products#products_ordered_price_asc'
   get '/products/ordered_price_desc', to: 'products#products_ordered_price_desc'
   get '/products/discounted', to: 'products#discounted'
   get '/products/random', to: 'products#random'
-  
   post '/products', to: 'products#create'
 
-  get '/products/:id', to: 'products#show'
   get '/products/:id/edit', to: 'products#edit'
+  get '/products/:id', to: 'products#show'
   patch '/products/:id', to: 'products#update'
   delete '/products/:id', to: 'products#destroy'
 
+  get '/orders/new', to: 'orders#new'
+  post '/orders/create', to: 'orders#create'
+  get 'orders/:id', to: 'orders#show'
 
   # :foo is a wildcard param passed via URL
   #can also get pass a record id as wildcard param via URL:

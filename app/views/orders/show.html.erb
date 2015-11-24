@@ -1,0 +1,63 @@
+<% if @order_exists%>
+
+  <% if @order_created %>
+    <div class="alert alert-success" role="alert"> Order submitted!  </div>
+  <% end %>
+
+  <div class = "col-md-2">
+    <h3> Order Info </h3>
+    <table> 
+      <tr>
+        <td class = "order_info_line">
+          <b>Order id: </b><%= @id %>
+        </td>
+      </tr>  
+      <tr>
+        <td class = "order_info_line">
+          <b>Item: </b><%= @product_name %>
+        </td>
+      </tr>
+      <tr>
+        <td class = "order_info_line">
+          <b>Quantity: </b><%= @order_quantity %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+        </td>
+      </tr>
+      <tr>
+        <td><br></td>
+      </tr>
+      <tr>
+        <td class="order_cost_line">
+          <b>Price:</b>
+            <% if @product.price %>
+              <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}"%>
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="order_cost_line">
+          <b>Tax:</b>
+            <% if @product.item_tax %>
+              <%= "#{number_to_currency(@product.item_tax, unit: '$', delimiter: ',')}"%>
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="order_cost_line">
+          <b>Order total:</b>
+          <% if @product.price %>
+            <%= "#{number_to_currency(@product.price+@product.item_tax, unit: '$', delimiter: ',')}"%>
+          <% end %>
+        </td>
+      </tr>  
+    </table>
+  </div>
+
+<% else %>
+
+  <div class="alert alert-danger" role="alert">Order id <%= @id %> doesn't exist</div>
+
+<% end %>

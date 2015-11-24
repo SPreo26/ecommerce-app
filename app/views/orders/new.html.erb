@@ -1,0 +1,41 @@
+<div class = "col-md-2">
+  <table> 
+    <tr>
+      <td class = "order_info_line">
+        Please review your order before it's final.
+      </td>
+    </tr>
+    <tr>
+      <td class = "order_info_line">
+        <b>Item: </b><%= @product_name %>
+      </td>
+    </tr>
+    <tr>
+      <td class = "order_info_line">
+        <b>Quantity: </b><%= @order_quantity %>
+      </td>
+    </tr>
+    <%= form_tag '/orders/create' do %>
+      <tr>
+        <td>   
+          <%= hidden_field_tag :product_id, @product_id %>
+        </td>
+      </tr>
+      <tr>
+        <td>   
+          <%= hidden_field_tag :order_created, "yes" %>
+        </td>
+      </tr>
+      <tr>
+        <td>   
+          <%= hidden_field_tag :order_quantity, @order_quantity, class: 'text_area' %>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <%= submit_tag "Submit Order", class: 'confirm_order_button' %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
