@@ -15,6 +15,30 @@
         <b>Quantity: </b><%= @order_quantity %>
       </td>
     </tr>
+    <tr>
+        <td class="order_cost_line">
+          <b>Price:</b>
+            <% if @subtotal %>
+              <%= "#{number_to_currency(@subtotal, unit: '$', delimiter: ',')}"%>
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="order_cost_line">
+          <b>Tax:</b>
+            <% if @tax %>
+              <%= "#{number_to_currency(@tax, unit: '$', delimiter: ',')}"%>
+            <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td class="order_cost_line">
+          <b>Order total:</b>
+          <% if @total %>
+            <%= "#{number_to_currency(@total, unit: '$', delimiter: ',')}"%>
+          <% end %>
+        </td>
+      </tr>  
     <%= form_tag '/orders/create' do %>
       <tr>
         <td>   
@@ -36,6 +60,7 @@
           <%= submit_tag "Submit Order", class: 'confirm_order_button' %>
         </td>
       </tr>
+
     <% end %>
   </table>
 </div>

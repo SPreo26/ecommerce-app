@@ -19,11 +19,17 @@
       </tr>
       <tr>
         <td class = "order_info_line">
+          <%= image_tag("#{@product_image_url}", class:"product_img") %>
+        </td>
+      </tr>
+      <tr>
+        <td class = "order_info_line">
           <b>Quantity: </b><%= @order_quantity %>
         </td>
       </tr>
       <tr>
-        <td>
+        <td class = "order_info_line">
+          <b>Your e-mail: </b><%= @user_email %>
         </td>
       </tr>
       <tr>
@@ -32,24 +38,24 @@
       <tr>
         <td class="order_cost_line">
           <b>Price:</b>
-            <% if @product.price %>
-              <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}"%>
+            <% if @order.subtotal %>
+              <%= "#{number_to_currency(@order.subtotal, unit: '$', delimiter: ',')}"%>
             <% end %>
         </td>
       </tr>
       <tr>
         <td class="order_cost_line">
           <b>Tax:</b>
-            <% if @product.item_tax %>
-              <%= "#{number_to_currency(@product.item_tax, unit: '$', delimiter: ',')}"%>
+            <% if @order.tax %>
+              <%= "#{number_to_currency(@order.tax, unit: '$', delimiter: ',')}"%>
             <% end %>
         </td>
       </tr>
       <tr>
         <td class="order_cost_line">
           <b>Order total:</b>
-          <% if @product.price %>
-            <%= "#{number_to_currency(@product.price+@product.item_tax, unit: '$', delimiter: ',')}"%>
+          <% if @order.total %>
+            <%= "#{number_to_currency(@order.total, unit: '$', delimiter: ',')}"%>
           <% end %>
         </td>
       </tr>  

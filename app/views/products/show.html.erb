@@ -160,7 +160,7 @@
         </td>
       </tr>
       <div class="quantity_field">
-        <%= form_tag '/orders/new', method: "get" do %>
+        <%= form_tag({controller: 'orders', action: 'new'}, method: 'get') do %>
           <tr> 
             <td class="quantity_field" >
               <%= label_tag "Quantity"%>
