@@ -1,0 +1,107 @@
+<% if current_user && @carted_products.any? %>
+  <h2 class="heading" > Shopping Cart </h2>
+  <% @carted_products.each do |carted_product| %>
+    <% @product = carted_product.product %>
+
+    <div class = "col-md-12">
+
+      <table class="cart_item"> 
+
+        <% Product.number_of_columns.times do |index| %>
+
+          <% @attrib_name = Product.column_names[index] %>
+          <% @attrib_value = @product.attributes.to_a[index][1] %>
+
+          <tr>
+            <% if @attrib_name == "name" %>
+              <td class="product_name" >
+            <% else %>
+              <td class="left_aligned_product_info">
+            <% end %>
+          
+            <% if ["price"].include?(@attrib_name) %>
+              <b>
+                <%= "#{@attrib_name.capitalize}: " %>
+              </b>
+            <% elsif @attrib_name=="supplier_id" %>
+              <b> Supplier: </b>
+            <% end %>             
+
+            <% if @attrib_name =="name" %> 
+               <b> <%= "#{@attrib_value}" %> </b>
+
+            <% elsif @attrib_name == "description" %>
+              <br> <%= "#{@attrib_value}" %>
+            
+            <% elsif @attrib_name =="price" %>
+              <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}" %>
+            
+            <% elsif @attrib_name == "supplier_id" %>
+              <br> <%= "#{@product.supplier.company_name}" %>
+            
+            <% end %>
+
+          </td></tr>
+
+
+          <% if @attrib_name == "name" %>
+            <% @images=@product.get_image_urls %>           
+            <tr><td>
+              <%= link_to "/products/#{@product.id}" do %>
+                <% image_tag "#{@images.first}", class: "product_img" %>
+              <% end %>
+            </td></tr>
+          <% end %>
+
+        <% end %>
+
+        <% if @product.sale_message && @product.sale_message!="" %>
+          <tr><td class="item_note"> 
+            <%= @product.sale_message %>
+          </td></tr>
+        <% end %>
+
+        <tr><td class="item_quantity"> 
+          <b>Quantity:</b>
+          <%= carted_product.quantity  %>
+        </td></tr> 
+
+        <tr><td class="item_quantity">
+          <%= link_to "/carted_products/#{carted_product.id}", method: 'delete' do %>
+            <%= submit_tag "Remove" %>
+          <% end %>
+        </td></tr>
+        
+        <tr><td> <br> </td></tr>
+
+      </table>
+
+    </div>
+
+  <% end %>
+
+  <div class="col-md-12">
+    <table>
+      <tr><td class="item_amounts">
+          <b>Subtotal:</b>
+              <%= "#{number_to_currency(@subtotal, unit: '$', delimiter: ',')}"%>
+      </td></tr>
+
+      <tr><td class="item_amounts">
+        <b>Tax:</b>
+          <%= "#{number_to_currency(@tax, unit: '$', delimiter: ',')}"%>
+      </td></tr>
+
+      <tr><td class="item_amounts">
+        <b>Total:</b>
+          <%= "#{number_to_currency(@total, unit: '$', delimiter: ',')}"%>
+      </td></tr>
+
+    </table>
+    <%= link_to '/orders/create', method: 'post' do %>
+      <%= submit_tag "Proceed to Checkout" %>
+    <% end %>
+  </div>
+<% elsif current_user && @carted_products.empty? %>
+  <h3 class="special_heading"> Your cart is empty! </h3>
+<% end %>

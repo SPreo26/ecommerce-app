@@ -11,7 +11,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151125021536) do
+ActiveRecord::Schema.define(version: 20151204052335) do
+
+  create_table "carted_products", force: :cascade do |t|
+    t.string   "user_id",    limit: 255
+    t.string   "integer",    limit: 255
+    t.integer  "product_id", limit: 4
+    t.integer  "quantity",   limit: 4
+    t.string   "status",     limit: 255
+    t.integer  "order_id",   limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "categorized_products", force: :cascade do |t|
+    t.integer  "product_id",  limit: 4
+    t.integer  "category_id", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "images", force: :cascade do |t|
     t.text     "url",        limit: 65535
@@ -22,10 +47,8 @@ ActiveRecord::Schema.define(version: 20151125021536) do
 
   create_table "orders", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
-    t.integer  "quantity",   limit: 4
     t.datetime "created_at",                                   null: false
     t.datetime "updated_at",                                   null: false
-    t.integer  "product_id", limit: 4
     t.decimal  "subtotal",             precision: 9, scale: 2
     t.decimal  "tax",                  precision: 9, scale: 2
     t.decimal  "total",                precision: 9, scale: 2
@@ -42,12 +65,20 @@ ActiveRecord::Schema.define(version: 20151125021536) do
     t.integer  "user_id",     limit: 4
   end
 
-  create_table "suppliers", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "email",      limit: 255
-    t.string   "phone",      limit: 255
+  create_table "roles", force: :cascade do |t|
+    t.string   "role_name",  limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.string   "company_name", limit: 255
+    t.string   "email",        limit: 255
+    t.string   "phone",        limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "first_name",   limit: 255
+    t.string   "last_name",    limit: 255
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,6 +94,7 @@ ActiveRecord::Schema.define(version: 20151125021536) do
     t.string   "last_sign_in_ip",        limit: 255
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
+    t.integer  "role_id",                limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

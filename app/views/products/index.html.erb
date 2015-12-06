@@ -1,13 +1,9 @@
 <h2 class="heading">Product Catalog</h2>
 <!-- image-responsive -->
 <% if @product_index_is_discounted %>
-  <h3 class="special_heading"> Discounted Items </h3>
-<% end %>
-
-<% if @product_create_failed %>
-
-  <div class="alert alert-danger" role="alert">Product could not be created - some info missing! </div>
-
+  <h3 class="special_heading">Discounted Items</h3>
+<% elsif @product_index_is_categorized %>
+  <h3 class="special_heading"> Category: <%= @category.name %></h3>
 <% end %>
 
 <% @products_subset.each do |row| %>

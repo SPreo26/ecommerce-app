@@ -1,69 +1,114 @@
-<% if @order_exists%>
+<% if current_user && @order%>
+<h2 class="heading">  Order Information: </h2>
+<% @order.carted_products.each do |carted_product| %>
+  <% @product = carted_product.product %>
 
-  <% if @order_created %>
-    <div class="alert alert-success" role="alert"> Order submitted!  </div>
-  <% end %>
+  <div class = "col-md-12">
 
-  <div class = "col-md-2">
-    <h3> Order Info </h3>
-    <table> 
-      <tr>
-        <td class = "order_info_line">
-          <b>Order id: </b><%= @id %>
-        </td>
-      </tr>  
-      <tr>
-        <td class = "order_info_line">
-          <b>Item: </b><%= @product_name %>
-        </td>
-      </tr>
-      <tr>
-        <td class = "order_info_line">
-          <%= image_tag("#{@product_image_url}", class:"product_img") %>
-        </td>
-      </tr>
-      <tr>
-        <td class = "order_info_line">
-          <b>Quantity: </b><%= @order_quantity %>
-        </td>
-      </tr>
-      <tr>
-        <td class = "order_info_line">
-          <b>Your e-mail: </b><%= @user_email %>
-        </td>
-      </tr>
+    <table class="cart_item"> 
+
+      <% Product.number_of_columns.times do |index| %>
+
+        <% @attrib_name = Product.column_names[index] %>
+        <% @attrib_value = @product.attributes.to_a[index][1] %>
+
+        <tr>
+          <% if @attrib_name == "name" %>
+            <td class="product_name" >
+          <% else %>
+            <td class="left_aligned_product_info">
+          <% end %>
+        
+          <% if ["price"].include?(@attrib_name) %>
+            <b>
+              <%= "#{@attrib_name.capitalize}: " %>
+            </b>
+          <% elsif @attrib_name=="supplier_id" %>
+            <b> Supplier: </b>
+          <% end %>             
+
+          <% if @attrib_name =="name" %> 
+             <b> <%= "#{@attrib_value}" %> </b>
+
+          <% elsif @attrib_name == "description" %>
+            <br> <%= "#{@attrib_value}" %>
+          
+          <% elsif @attrib_name =="price" %>
+            <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}" %>
+          
+          <% elsif @attrib_name == "supplier_id" %>
+            <br> <%= "#{@product.supplier.company_name}" %>
+          
+          <% end %>
+
+            </td>
+        </tr>
+
+
+        <% if @attrib_name == "name" %>
+                  
+          <% @images=@product.get_image_urls %>
+          
+          <% @images.each do |url| %>
+            <tr>
+              <td>
+              <%= image_tag(  "#{url}", class:"product_img") %>
+              </td>
+            </tr>
+          <% end %>
+
+        <% end %>
+
+      <% end %>
+
+      <% if @product.sale_message && @product.sale_message!="" %>
+        <tr>
+          <td class="item_note"> 
+            <%= @product.sale_message %>
+          </td>
+        </tr>
+      <% end %>
+
       <tr>
         <td><br></td>
       </tr>
+
       <tr>
-        <td class="order_cost_line">
-          <b>Price:</b>
-            <% if @order.subtotal %>
-              <%= "#{number_to_currency(@order.subtotal, unit: '$', delimiter: ',')}"%>
-            <% end %>
+        <td class="item_quantity"> 
+          <b>Quantity</b>
+          <%= carted_product.quantity  %>
         </td>
-      </tr>
-      <tr>
-        <td class="order_cost_line">
-          <b>Tax:</b>
-            <% if @order.tax %>
-              <%= "#{number_to_currency(@order.tax, unit: '$', delimiter: ',')}"%>
-            <% end %>
-        </td>
-      </tr>
-      <tr>
-        <td class="order_cost_line">
-          <b>Order total:</b>
-          <% if @order.total %>
-            <%= "#{number_to_currency(@order.total, unit: '$', delimiter: ',')}"%>
-          <% end %>
-        </td>
-      </tr>  
+      </tr> 
+
     </table>
+
   </div>
 
-<% else %>
+<% end %>
 
-  <div class="alert alert-danger" role="alert">Order id <%= @id %> doesn't exist</div>
+  <div class="col-md-12">
+    <table>
+      <tr>
+        <td class="item_amounts">
+          <b>Subtotal:</b>
+              <%= "#{number_to_currency(@order.subtotal, unit: '$', delimiter: ',')}"%>
+        </td>
+      </tr>
 
+      <tr>
+        <td class="item_amounts">
+          <b>Tax:</b>
+            <%= "#{number_to_currency(@order.tax, unit: '$', delimiter: ',')}"%>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="item_amounts">
+          <b>Order Total:</b>
+              <%= "#{number_to_currency(@order.total, unit: '$', delimiter: ',')}"%>
+        </td>
+      </tr>
+
+    <table>
+  </div>
 <% end %>

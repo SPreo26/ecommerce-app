@@ -2,17 +2,12 @@
   <h2 class="heading"> Random pick! </h2>
 <% end %>
 
-<%if @product_id_exists %>
-
-  <% if @product_created%>
-    <div class="alert alert-success" role="alert"> New product created! </div>
-  <% end %>
+<% if @product %>
 
   <div class = "col-md-2">
-
     <table> 
 
-      <% @number_of_columns.times do |index| %>
+      <% Product.number_of_columns.times do |index| %>
 
         <% @attrib_name = Product.column_names[index] %>
         <% @attrib_value = @product.attributes.to_a[index][1] %>
@@ -42,10 +37,7 @@
             <%= "#{number_to_currency(@product.price, unit: '$', delimiter: ',')}" %>
           
           <% elsif @attrib_name == "supplier_id" %>
-            <br> <%= "#{@supplier_name}" %>
-
-          <% elsif ["description"].include?(@attrib_name)%>
-            <%= "#{@attrib_value}" %>
+            <br> <%= "#{@product.supplier.company_name}" %>
           
           <% end %>
 
@@ -76,18 +68,14 @@
       <tr>
         <td class="item_tax">
           <b>Tax:</b>
-            <% if @product.item_tax %>
               <%= "#{number_to_currency(@product.item_tax, unit: '$', delimiter: ',')}"%>
-            <% end %>
         </td>
       </tr>
 
       <tr>
         <td class="price_after_tax">
           <b>Full Price:</b>
-          <% if @product.price %>
             <%= "#{number_to_currency(@product.price+@product.item_tax, unit: '$', delimiter: ',')}"%>
-          <% end %>
         </td>
       </tr>     
 
@@ -118,7 +106,7 @@
           <div class="button">
             
             <button type="button">
-              <%= link_to "Delete", "/products/#{@id}", method: :delete %>
+              <%= link_to "Delete", "/products/#{@product.id}", method: :delete %>
             </button>
 
           </div>
@@ -159,30 +147,17 @@
           </div>
         </td>
       </tr>
-      <div class="quantity_field">
-        <%= form_tag({controller: 'orders', action: 'new'}, method: 'get') do %>
-          <tr> 
-            <td class="quantity_field" >
-              <%= label_tag "Quantity"%>
-              <%= text_area_tag :order_quantity, "1", class: 'quantity_text_area'%>
-            </td>
-          </tr>
-            <td>   
-              <%= hidden_field_tag :product_id, @id %>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <%= submit_tag "Buy Now" %>
-            </td>
-          </tr>
-        <% end %>
-      </div>
     </table>
+    <div>
+      <%= form_tag({controller: 'carted_products', action: 'create'}, method: 'post') do %>
+          <div class="quantity_field" >
+            <%= label_tag "Quantity"%>
+            <%= text_area_tag :carted_quantity, "1", class: 'quantity_text_area'%> 
+          </div>
+            <%= hidden_field_tag :product_id, @id %>
+            <%= submit_tag "Add to Cart" %>
+      <% end %>
+    </div>
   </div>
-
-<% else %>
-
-  <div class="alert alert-danger" role="alert">Product id <%= @id %> doesn't exist</div>
 
 <% end %>

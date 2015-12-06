@@ -1,5 +1,6 @@
+<%= form_tag '/products', method: :post do %>
 <table class="margined">
-  <%= form_tag '/products' do %>
+<div>
     <tr>
       <div>
         <td>
@@ -33,27 +34,15 @@
       </div>
     </tr>
 
-    <tr>
-      <div>
-        <td> 
-          <%= label_tag "Description" %>
-        </td>
-        <td>
-          <%= text_area_tag :description, "", class: 'description_area' %>
+    <tr><div><td> 
+      <%= f. :description, "", class: 'description_area' %>
         </td>
       </div>
     </tr>
 
-    <tr>
-      <div>
-        <td> 
-          <%= label_tag "Supplier" %>
-        </td>
-        <td>
-          <%= text_area_tag :supplier_name, "", class: 'text_area' %>
-        </td>
-      </div>
-    </tr>
+    <tr><div><td> 
+          <%= f.collection_select, :id, Supplier.all, :id, :company_name, class: 'text_area' %>
+    </td></div></tr>
 
    
     <tr>
@@ -63,5 +52,5 @@
         </div>
       </td>
     </tr>
-  <% end %>
 </table>
+<% end %>

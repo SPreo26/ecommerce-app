@@ -3,22 +3,29 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "products#index"
 
+  get '/know_your_role', to: 'products#know_your_role'#non-admin deny page
+
+  resources :products
+
   get '/products', to: 'products#index'
   get '/products/new', to: 'products#new'
   get '/products/ordered_price_asc', to: 'products#products_ordered_price_asc'
   get '/products/ordered_price_desc', to: 'products#products_ordered_price_desc'
-  get '/products/discounted', to: 'products#discounted'
   get '/products/random', to: 'products#random'
   post '/products', to: 'products#create'
-
   get '/products/:id/edit', to: 'products#edit'
   get '/products/:id', to: 'products#show'
   patch '/products/:id', to: 'products#update'
   delete '/products/:id', to: 'products#destroy'
 
-  get '/orders/new', to: 'orders#new'
   post '/orders/create', to: 'orders#create'
-  get 'orders/:id', to: 'orders#show'
+  get '/orders/:id', to: 'orders#show'
+
+  get '/carted_products', to: 'carted_products#index'
+  post 'carted_products/create', to: 'carted_products#create'
+  delete '/carted_products/:id', to: 'carted_products#destroy'
+
+  resources :suppliers
 
   # :foo is a wildcard param passed via URL
   #can also get pass a record id as wildcard param via URL:
