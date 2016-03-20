@@ -4,8 +4,6 @@ Image.create!([
   {url: "http://images.clipartpanda.com/thing-thing1_color.png", product_id: 3},
   {url: "http://ecx.images-amazon.com/images/I/81e0PQxZ%2BmL._SL1500_.jpg", product_id: 1},
   {url: "https://i.ytimg.com/vi/D9c02cZuDZI/hqdefault.jpg", product_id: 22},
-  {url: "C", product_id: 23},
-  {url: nil, product_id: 24}
 ])
 Order.create!([
   {user_id: 1, quantity: 5, product_id: 22, subtotal: "5.0", tax: "0.45", total: "5.45"},
@@ -18,9 +16,6 @@ Product.create!([
   {name: "Crazy Bones", price: "5.0", description: "Why you crazy bone?......", in_stock: true, supplier_id: 2, user_id: 1}
 ])
 Supplier.create!([
-  {name: "Acme", email: "acme@acme.com", phone: "6-12344566"},
-  {name: "Motley Industries", email: "motley@harrisoncrew.com", phone: "2424242 ext:garage#"},
-  {name: "E", email: nil, phone: nil},
-  {name: nil, email: nil, phone: nil},
-  {name: "", email: nil, phone: nil}
+  {company_name: "Acme", email: "acme@acme.com", phone: "6-12344566"},
+  {company_name: "Motley Industries", email: "motley@harrisoncrew.com", phone: "2424242 ext:garage#"},
 ])

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151204052335) do
+ActiveRecord::Schema.define(version: 20160315104652) do
 
   create_table "carted_products", force: :cascade do |t|
     t.string   "user_id",    limit: 255
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20151204052335) do
     t.decimal  "subtotal",             precision: 9, scale: 2
     t.decimal  "tax",                  precision: 9, scale: 2
     t.decimal  "total",                precision: 9, scale: 2
+    t.integer  "quantity",   limit: 4
+    t.integer  "product_id", limit: 4
   end
 
   create_table "products", force: :cascade do |t|

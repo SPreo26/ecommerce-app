@@ -4,6 +4,8 @@
   <h3 class="special_heading">Discounted Items</h3>
 <% elsif @product_index_is_categorized %>
   <h3 class="special_heading"> Category: <%= @category.name %></h3>
+<% elsif @product_index_is_search_results %>
+  <h3 class="special_heading"> Search Results for: <%= @search_term %> </h3>
 <% end %>
 
 <% @products_subset.each do |row| %>
@@ -11,7 +13,7 @@
 <div class = "col-md-2">
   <table> 
   
-    <% @number_of_columns.times do |index| %>
+    <% Product.number_of_columns.times do |index| %>
 
       <% @attrib_name = Product.column_names[index] %>
       <% @attrib_value = row.attributes.to_a[index][1] %>

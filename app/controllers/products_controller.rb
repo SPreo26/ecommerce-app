@@ -62,63 +62,58 @@ class ProductsController < ApplicationController
 
   def new
        @product = Product.new
-       @product.images.build 
+       @product.images.build
   end
 
   def search
-    search_term = params[:search]
-    @products = Product.where("name LIKE ? OR description LIKE ?", "%#{search_term}", "%#{search_term}")
+    @search_term = params[:search].downcase
+    @products_subset = Product.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", "%#{@search_term}%", "%#{@search_term}%")
+    @product_index_is_search_results = true
+    render :index
   end
 
   def create
-    @product_info_to_create = {}
-    
-    @product_info_to_create["name"] = params[:name]
-    @product_info_to_create["price"] = params[:price].to_f
-    @product_info_to_create["description"] = params[:description]
 
-    @product = Product.new
-
-    @product_info_to_create.each do |column_name, column_value|
-      @product.send("#{column_name}=",column_value)#eg. convert column_name such as "name" and column_value such as "car"
-      #to @product.name="car"
-    end
+    @product = Product.new(product_params)
+    @product.images.build
 
     @product.user_id = current_user.id
+    images_params = product_params[:images_attributes]
 
-    if params[:image] != ""
-      image=Image.new({url: params[:image]})
-    else
-      image=Image.new
+    images=[]
+    p images_params
+    images_params.each_value do |image_params|
+      p image_params
+      images<<Image.new({product_id: @product.id, url: image_params["url"]})
     end
 
     @create_error_messages = []
-
-    if image.invalid?
-      @create_error_messages += image.errors.full_messages
-    end
+    
+    # if image.invalid?
+    #   @create_error_messages += image.errors.full_messages
+    # end
 
     if @product.valid?
       
-      image.product_id=@product.id
-
-      if image.valid?
-        image.save
+      images.each do |image|
+        if image.valid?
+          image.save
+        end
       end
 
-      supplier.company_name = params[:supplier.company_name]
-      supplier = Supplier.find_by(name: supplier.company_name)
-      if supplier
-        existing_supplier_id = supplier.id
-        @product.update(supplier_id: existing_supplier_id)
-      else
-        supplier=Supplier.new(name: supplier.company_name)
-        supplier.save
-        new_supplier_id = supplier.id
-        @product.update(supplier_id: new_supplier_id)
-      end
+      # supplier.company_name = params[:supplier.company_name]
+      # supplier = Supplier.find_by(name: supplier.company_name)
+      # if supplier
+      #   existing_supplier_id = supplier.id
+      #   @product.update(supplier_id: existing_supplier_id)
+      # else
+      #   supplier=Supplier.new(name: supplier.company_name)
+      #   supplier.save
+      #   new_supplier_id = supplier.id
+      #   @product.update(supplier_id: new_supplier_id)
+      # end
 
-      @number_of_columns = Product.column_names.length
+      # @number_of_columns = Product.column_names.length
 
       @product.save
       flash.now[:success] = "New product created!"  
@@ -150,45 +145,18 @@ class ProductsController < ApplicationController
   def edit
     @id = params[:id].to_i
     @product = Product.find_by(id: @id)
-
-    if @product       
-      @product_id_exists = true
-    else
-      @product_id_exists = false
-    end
   end
 
-  def update      
-    @id = params[:id].to_i
-    @product_info_to_edit = {}
-
-    if params[:name] != ""
-      @product_info_to_edit["name"] = params[:name]
-    end
-    
-    if params[:price] != ""
-      @product_info_to_edit["price"] = params[:price].to_f
-    end
-
-    if params[:description] != ""
-      @product_info_to_edit["description"] = params[:description]
-    end
-
-    if @product_info_to_edit.any? || params[:image] != "" #this is to prevent empty form submissions from creating a contact
-    
-      product = Product.find_by(id: @id) 
-      
-      @product_info_to_edit.each do |column_name, column_value|
-        product.update(column_name.to_sym => column_value) 
-      end
-      
-    end
-
+  def update
+    @product = Product.find(params[:id])
+    @product.update(product_params)
     redirect_to "/products/#{@id}"
   end
 
   def product_params
-    params.require(:product).permit(:id, :name, :description, :supplier_id, images_attributes: [:url])
+    product_params = params.require(:product).permit(:id, :name, :price, :description, :supplier_id, images_attributes: [:id, :url])
+    product_params[:id]=params[:id]
+    return product_params
   end
 
 end

@@ -5,9 +5,9 @@ Rails.application.routes.draw do
 
   get '/know_your_role', to: 'products#know_your_role'#non-admin deny page
 
-  resources :products
 
   get '/products', to: 'products#index'
+  get '/products/search', to: 'products#search'
   get '/products/new', to: 'products#new'
   get '/products/ordered_price_asc', to: 'products#products_ordered_price_asc'
   get '/products/ordered_price_desc', to: 'products#products_ordered_price_desc'
@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   post 'carted_products/create', to: 'carted_products#create'
   delete '/carted_products/:id', to: 'carted_products#destroy'
 
+
+  resources :products
   resources :suppliers
 
   # :foo is a wildcard param passed via URL

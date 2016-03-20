@@ -1,56 +1,6 @@
-<%if @product_id_exists %>
+<%if @product %>
   
-
-  <table class="margined">
-    
-    <%= form_tag({controller: 'products', action: "update", id: "#{@id}"}, method: 'patch') do %>
-      
-      <tr>
-        <div>
-          <td>
-            <%= label_tag "Name" %>
-          </td>
-          <td>
-            <%= text_area_tag :name, "#{@product.name}", class:'text_area' %>
-          </td>
-        </div>
-      </tr>
-
-      <tr>  
-        <div>
-          <td>
-            <%= label_tag "Price" %>
-          </td>
-          <td>
-            <%= text_area_tag :price, "#{@product.price}", class:'text_area' %>
-          </td>
-        </div>
-      </tr>
-
-
-
-      <tr>
-        <div>
-          <td> 
-            <%= label_tag "Description" %>
-          </td>
-          <td>
-            <%= text_area_tag :description, "#{@product.description}", class:'text_area' %>
-          </td>
-        </div>
-      </tr>
-     
-      <tr>
-        <td>
-          <div>
-            <%= submit_tag "Submit" %>
-          </div>
-        </td>
-      </tr>
-    
-    <% end %>
-
-  </table>
+  <%= render "form" %>
 
 <% else %>
 
