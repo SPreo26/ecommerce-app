@@ -13,7 +13,7 @@
 
     <%= f.fields_for :images do |ff| %>
       <tr><div>
-        <td><%= ff.label "Image URL 1" %></td>
+        <td><%= ff.label "Image URL" %></td>
         <td><%= ff.text_field :url, class: 'text_area' %></td>
       </div></tr>
     <% end %>
@@ -25,7 +25,7 @@
 
     <tr><div>
       <td> <%= f.label "Supplier" %> </td>
-      <td class="form_dropdown"> <%= f.collection_select :id, Supplier.all, :id, :company_name %> </td>
+      <td class="form_dropdown"> <%= f.collection_select :supplier_id, Supplier.all, :id, :company_name %> </td>
     </div></tr>
    
     <tr><div><td>

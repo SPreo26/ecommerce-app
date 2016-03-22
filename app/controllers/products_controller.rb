@@ -61,8 +61,10 @@ class ProductsController < ApplicationController
   end
 
   def new
-       @product = Product.new
-       @product.images.build
+    @product = Product.new
+    if @product.images.empty?
+      @product.images.build
+    end
   end
 
   def search
@@ -75,19 +77,30 @@ class ProductsController < ApplicationController
   def create
 
     @product = Product.new(product_params)
-    @product.images.build
-
     @product.user_id = current_user.id
-    images_params = product_params[:images_attributes]
+    # images_params = product_params[:images_attributes]
+    # p "ALL IMAGES"
+    # p @product.images
+    # p "AFTER"
+    # @product.images.build
+    # p @product.images
+    # @product.images.each_with_index do |image, index|
+    #   p "CLASS"
+    #   p images_params[index.to_s].class
+    #   image.update(product_id)
+    #   p "image #{index}"
+    #   p @product.images[index]
+    # end
+    
 
-    images=[]
-    p images_params
-    images_params.each_value do |image_params|
-      p image_params
-      images<<Image.new({product_id: @product.id, url: image_params["url"]})
-    end
+    # images=[]
+    # p images_params
+    # images_params.each_value do |image_params|
+    #   p image_params
+    #   images<<Image.new({product_id: @product.id, url: image_params["url"]})
+    # end
 
-    @create_error_messages = []
+    # @create_error_messages = []
     
     # if image.invalid?
     #   @create_error_messages += image.errors.full_messages
@@ -95,11 +108,11 @@ class ProductsController < ApplicationController
 
     if @product.valid?
       
-      images.each do |image|
-        if image.valid?
-          image.save
-        end
-      end
+      # images.each do |image|
+      #   if image.valid?
+      #     image.save
+      #   end
+      # end
 
       # supplier.company_name = params[:supplier.company_name]
       # supplier = Supplier.find_by(name: supplier.company_name)
@@ -121,7 +134,7 @@ class ProductsController < ApplicationController
 
     else #if product.invalid?
       @product_create_failed = true
-      @create_error_messages += @product.errors.full_messages
+      @create_error_messages = @product.errors.full_messages
       p @create_error_messages
       render "/products/new"
     end
@@ -158,5 +171,9 @@ class ProductsController < ApplicationController
     product_params[:id]=params[:id]
     return product_params
   end
+
+  def image_params
+    images_params = params.require(:product).permit(images_attributes: [:id, :url])
+  end  
 
 end

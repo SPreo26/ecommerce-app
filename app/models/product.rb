@@ -1,10 +1,10 @@
 class Product < ActiveRecord::Base
-  belongs_to :supplier
+  belongs_to :supplier, inverse_of: :products
   belongs_to :user
-  has_many :images
+  has_many :images, inverse_of: :product
   has_many :categorized_products
   has_many :categories, through: :categorized_products
-  accepts_nested_attributes_for :images
+  accepts_nested_attributes_for :images, :supplier
 
   validates :price, numericality: { greater_than: 0 }
   validates :description, length: { minimum: 5, maximum: 2000}
